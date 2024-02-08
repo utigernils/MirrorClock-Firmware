@@ -1,5 +1,6 @@
-# MirrorClock-Firmware - Not Uploaded Yet
-
+# MirrorClock-Firmware
+> [!NOTE]  
+> Im currently waiting for permision from Bastelgarage.ch to upload.
 ## Overview
 MirrorClock-Firmware is a firmware designed for the "23-er Platine" from Bastelgarage.ch. This firmware comes in two versions: a **standard** version and an **MQTT** version. It addresses efficiency issues and resolves errors, such as the random restarts observed in the original firmware on some ESP8266 devices.
 
