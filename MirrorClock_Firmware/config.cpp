@@ -21,6 +21,9 @@ const char* NTP_SERVER = "pool.ntp.org";
 const unsigned long UPDATE_INTERVAL = 100;
 const bool AUTO_BRIGHTNESS_ENABLED = false;
 
+// ====== DEBUG CONFIGURATION ======
+// Note: DEBUG_ENABLED and DEBUG_PREFIX_* constants are defined in config.h
+
 // ====== GLOBAL STATE VARIABLES ======
 int lastHour = -1;
 int lastMinute = -1;

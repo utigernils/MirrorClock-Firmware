@@ -86,6 +86,10 @@ void handleStatus() {
 }
 
 void handlePower() {
+  #if DEBUG_ENABLED
+    Serial.println(DEBUG_PREFIX_WEB "API call: /api/power");
+  #endif
+  
   if (!server.hasArg("plain")) {
     server.send(400, "application/json", createJsonResponse(false, "No JSON body provided"));
     return;
@@ -107,6 +111,10 @@ void handlePower() {
   
   LED_ENABLED = doc["enabled"];
   
+  #if DEBUG_ENABLED
+    Serial.println(DEBUG_PREFIX_LED "Power state changed: " + String(LED_ENABLED ? "ON" : "OFF"));
+  #endif
+  
   if (!LED_ENABLED) {
     strip.clear();
     strip.show();
@@ -125,6 +133,10 @@ void handlePower() {
 }
 
 void handleSetBrightness() {
+  #if DEBUG_ENABLED
+    Serial.println(DEBUG_PREFIX_WEB "API call: /api/brightness");
+  #endif
+  
   if (!server.hasArg("plain")) {
     server.send(400, "application/json", createJsonResponse(false, "No JSON body provided"));
     return;
@@ -189,6 +201,10 @@ void handleSetBrightness() {
 }
 
 void handleSetColor() {
+  #if DEBUG_ENABLED
+    Serial.println(DEBUG_PREFIX_WEB "API call: /api/color");
+  #endif
+  
   if (!server.hasArg("plain")) {
     server.send(400, "application/json", createJsonResponse(false, "No JSON body provided"));
     return;
@@ -286,7 +302,9 @@ void setupWebAPI() {
   server.on("/api/color", HTTP_OPTIONS, handleCors);
   
   server.begin();
-  Serial.println("Web API started on port " + String(WEB_SERVER_PORT));
+  #if DEBUG_ENABLED
+    Serial.println(DEBUG_PREFIX_WEB "API server started on port " + String(WEB_SERVER_PORT));
+  #endif
 }
 
 void handleWebRequests() {

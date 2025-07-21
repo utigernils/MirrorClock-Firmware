@@ -39,5 +39,14 @@ extern int lastMinute;
 // ====== WEB SERVER CONFIGURATION ======
 #define WEB_SERVER_PORT 80
 
+// ====== DEBUG CONFIGURATION ======
+#define DEBUG_ENABLED true
+#define DEBUG_PREFIX_WIFI    "[WIFI] "
+#define DEBUG_PREFIX_LED     "[LED]  "
+#define DEBUG_PREFIX_TIME    "[TIME] "
+#define DEBUG_PREFIX_SENSOR  "[SENSOR] "
+#define DEBUG_PREFIX_WEB     "[WEB]  "
+#define DEBUG_PREFIX_SYSTEM  "[SYSTEM] "
+
 // ====== GLOBAL OBJECTS ======
 extern class Adafruit_NeoPixel strip;

@@ -7,6 +7,9 @@ void setupLEDs() {
   strip.begin();
   strip.clear();
   strip.show();
+  #if DEBUG_ENABLED
+    Serial.println(DEBUG_PREFIX_LED "NeoPixel strip initialized (" + String(LED_COUNT) + " LEDs)");
+  #endif
 }
 
 int roundTo5(int value) {
@@ -33,7 +36,9 @@ void lightLine(const Line &line) {
 }
 
 void updateWatchface(int hours, int minutes) {
-  Serial.println("Updating watchface...");
+  #if DEBUG_ENABLED
+    Serial.println(DEBUG_PREFIX_LED "Updating display: " + String(hours) + ":" + String(minutes < 10 ? "0" : "") + String(minutes));
+  #endif
   strip.clear();
 
   if (!LED_ENABLED) {
