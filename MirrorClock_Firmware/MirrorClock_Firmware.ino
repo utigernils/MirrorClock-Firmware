@@ -19,8 +19,6 @@ void setup() {
 }
 
 void loop() {
-  updateTime();
-
   int hours = getHour();
   int minutes = getMinute();
 

@@ -1,27 +1,35 @@
 #pragma once
-#include <WiFiUdp.h>
-#include <NTPClient.h>
+#include <time.h>
 
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org");
+const char* TZ_EUROPE_ZURICH = "CET-1CEST,M3.5.0/2,M10.5.0/3";
+const char* NTP_SERVER = "pool.ntp.org";
 
 void startNTP() {
-  timeClient.begin();
+  configTime(TZ_EUROPE_ZURICH, NTP_SERVER);
 }
 
-void updateTime() {
-  timeClient.update();
-}
-
-unsigned long getEpochTime() {
-  return timeClient.getEpochTime();
+bool getLocalTimeSafe(struct tm* timeinfo) {
+  if (!getLocalTime(timeinfo)) {
+    Serial.println("Failed to obtain time");
+    return false;
+  }
+  return true;
 }
 
 int getHour() {
-  int hour = ((timeClient.getEpochTime() % 86400L) / 3600) + 1;
-  return (hour >= 24) ? hour - 24 : hour;
+  struct tm timeinfo;
+  if (!getLocalTimeSafe(&timeinfo)) return -1;
+  return timeinfo.tm_hour;
 }
 
 int getMinute() {
-  return (timeClient.getEpochTime() % 3600) / 60;
+  struct tm timeinfo;
+  if (!getLocalTimeSafe(&timeinfo)) return -1;
+  return timeinfo.tm_min;
+}
+
+unsigned long getEpochTime() {
+  time_t now;
+  time(&now);
+  return now;
 }
