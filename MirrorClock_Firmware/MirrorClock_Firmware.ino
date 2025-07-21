@@ -1,4 +1,5 @@
 #include "wifi_connection.h"
+#include "web_api.h"
 #include "time_sync.h"
 #include "led_driver.h"
 #include "lines.h"
@@ -10,6 +11,7 @@ void setup() {
   Serial.begin(115200);
 
   connectToWiFi();
+  setupWebAPI();
   startNTP();
   setupLEDs();
 
@@ -19,6 +21,8 @@ void setup() {
 }
 
 void loop() {
+  handleWebRequests();
+
   int hours = getHour();
   int minutes = getMinute();
 
