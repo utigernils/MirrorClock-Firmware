@@ -3,6 +3,7 @@
 #include "time_sync.h"
 #include "led_driver.h"
 #include "lines.h"
+#include "light_sensor.h"
 
 int lastHour = -1;
 int lastMinute = -1;
@@ -14,6 +15,7 @@ void setup() {
   setupWebAPI();
   startNTP();
   setupLEDs();
+  initLightSensor();
 
   lightLine(IT);
   lightLine(IS);
@@ -22,6 +24,9 @@ void setup() {
 
 void loop() {
   handleWebRequests();
+
+  strip.setBrightness(getBrightness());
+  strip.show();
 
   int hours = getHour();
   int minutes = getMinute();
