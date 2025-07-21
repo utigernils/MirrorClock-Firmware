@@ -20,6 +20,6 @@ uint8_t getBrightness() {
   Serial.println(" lx");
 
   lux = constrain(lux, 0, 200); 
-  uint8_t brightness = map(lux, 0, 10, 10, 255); 
+  uint8_t brightness = map(lux, 0, 10, 5, 255); 
   return brightness;
 }
