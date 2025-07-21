@@ -36,6 +36,11 @@ void updateWatchface(int hours, int minutes) {
   Serial.println("Updating watchface...");
   strip.clear();
 
+  if (!LED_ENABLED) {
+    strip.show();
+    return;
+  }
+
   int remainder = minutes % 5;
   if (remainder != 0) {
     for (int i = 1; i <= remainder; i++) {

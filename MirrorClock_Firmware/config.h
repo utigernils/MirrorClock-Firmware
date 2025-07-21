@@ -12,6 +12,7 @@ extern int LED_R;
 extern int LED_G;
 extern int LED_B;
 extern int LED_BRIGHTNESS;
+extern bool LED_ENABLED;
 
 // ====== TIME CONFIGURATION ======
 extern const char* TIMEZONE;
@@ -29,6 +30,10 @@ extern const char* NTP_SERVER;
 // ====== MAIN LOOP CONFIGURATION ======
 extern const unsigned long UPDATE_INTERVAL;
 extern const bool AUTO_BRIGHTNESS_ENABLED;
+
+// ====== GLOBAL STATE VARIABLES ======
+extern int lastHour;
+extern int lastMinute;
 
 // ====== WEB SERVER CONFIGURATION ======
 #define WEB_SERVER_PORT 80

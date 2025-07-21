@@ -6,9 +6,6 @@
 #include "lines.h"
 #include "light_sensor.h"
 
-int lastHour = -1;
-int lastMinute = -1;
-
 unsigned long lastUpdateTime = 0;
 
 void setup() {
