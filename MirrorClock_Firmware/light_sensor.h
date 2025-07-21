@@ -15,11 +15,14 @@ void initLightSensor() {
 
 uint8_t getBrightness() {
   float lux = lightMeter.readLightLevel();
-  Serial.print("Ambient light: ");
-  Serial.print(lux);
-  Serial.println(" lx");
-
   lux = constrain(lux, 0, 200); 
   uint8_t brightness = map(lux, 0, 10, 5, 255); 
   return brightness;
 }
+
+uint8_t getLightLevel() {
+  float lux = lightMeter.readLightLevel();
+  return lux;
+}
+
+

@@ -2,6 +2,7 @@
 #include <ESP8266WebServer.h>
 #include "time_sync.h"
 #include "led_driver.h"
+#include "light_sensor.h"
 
 extern int Brightness;
 extern Adafruit_NeoPixel strip;
@@ -12,7 +13,10 @@ void handleStatus() {
   String json = "{";
   json += "\"hour\":" + String(getHour()) + ",";
   json += "\"minute\":" + String(getMinute()) + ",";
-  json += "\"brightness\":" + String(Brightness);
+  json += "\"brightness\":" + String(Brightness) + ",";
+  json += "\"BH1750\":{";
+  json += "\"lux\":" + String(getLightLevel());
+  json += "}";
   json += "}";
   server.send(200, "application/json", json);
 }

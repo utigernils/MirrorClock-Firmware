@@ -11,6 +11,8 @@ int lastMinute = -1;
 unsigned long lastUpdateTime = 0;
 const unsigned long updateInterval = 100;
 
+const bool autoBrightness = false;
+
 void setup() {
   Serial.begin(115200);
 
@@ -32,8 +34,10 @@ void loop() {
   if (currentTime - lastUpdateTime >= updateInterval) {
     lastUpdateTime = currentTime;
 
-    strip.setBrightness(getBrightness());
-    strip.show();
+    if (autoBrightness) {
+      strip.setBrightness(getBrightness());
+      strip.show();
+    }
 
     int hours = getHour();
     int minutes = getMinute();
