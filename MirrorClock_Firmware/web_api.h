@@ -156,7 +156,6 @@ void handleSetBrightness() {
     return;
   }
   
-  // Check if brightness is "auto" string or numeric value
   if (doc["brightness"].is<String>()) {
     String brightnessStr = doc["brightness"];
     if (brightnessStr.equalsIgnoreCase("auto")) {
@@ -176,7 +175,6 @@ void handleSetBrightness() {
     }
   }
   
-  // Handle numeric brightness value
   int brightness = doc["brightness"];
   
   if (brightness < 0 || brightness > 255) {
@@ -184,7 +182,7 @@ void handleSetBrightness() {
     return;
   }
   
-  LED_AUTO_BRIGHTNESS = false;  // Disable auto brightness when setting manual value
+  LED_AUTO_BRIGHTNESS = false;  
   LED_BRIGHTNESS = brightness;
   if (LED_ENABLED) {
     strip.setBrightness(LED_BRIGHTNESS);

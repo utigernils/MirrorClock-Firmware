@@ -12,7 +12,7 @@ void setup() {
   Serial.begin(115200);
   
   #if DEBUG_ENABLED
-    delay(3000); // Give serial time to connect
+    delay(3000);
     Serial.println("\n==================================================");
     Serial.println(DEBUG_PREFIX_SYSTEM "MirrorClock starting up...");
     Serial.println(DEBUG_PREFIX_SYSTEM "Firmware build: " + String(__DATE__) + " " + String(__TIME__));
@@ -26,7 +26,6 @@ void setup() {
   setupLEDs();
   initLightSensor();
 
-  // Show initial "IT IS" display
   lightLine(IT);
   lightLine(IS);
   strip.show();
@@ -44,10 +43,9 @@ void loop() {
   if (currentTime - lastUpdateTime >= UPDATE_INTERVAL) {
     lastUpdateTime = currentTime;
 
-    // Periodic status output (every 5 minutes)
     #if DEBUG_ENABLED
       static unsigned long lastStatusTime = 0;
-      if (currentTime - lastStatusTime >= 300000) { // 5 minutes
+      if (currentTime - lastStatusTime >= 300000) { 
         lastStatusTime = currentTime;
         Serial.println(DEBUG_PREFIX_SYSTEM "Status - Uptime: " + String(currentTime/1000) + "s | Free heap: " + String(ESP.getFreeHeap()) + " bytes");
       }

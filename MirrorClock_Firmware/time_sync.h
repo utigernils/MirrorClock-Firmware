@@ -13,7 +13,7 @@ bool getLocalTimeSafe(struct tm* timeinfo) {
   if (!getLocalTime(timeinfo)) {
     static unsigned long lastError = 0;
     unsigned long now = millis();
-    if (now - lastError > 30000) { // Only print error every 30 seconds
+    if (now - lastError > 30000) { 
       #if DEBUG_ENABLED
         Serial.println(DEBUG_PREFIX_TIME "ERROR: Failed to obtain time from NTP");
       #endif
