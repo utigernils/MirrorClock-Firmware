@@ -8,6 +8,9 @@
 int lastHour = -1;
 int lastMinute = -1;
 
+unsigned long lastUpdateTime = 0;
+const unsigned long updateInterval = 100;
+
 void setup() {
   Serial.begin(115200);
 
@@ -25,17 +28,22 @@ void setup() {
 void loop() {
   handleWebRequests();
 
-  strip.setBrightness(getBrightness());
-  strip.show();
+  unsigned long currentTime = millis();
+  if (currentTime - lastUpdateTime >= updateInterval) {
+    lastUpdateTime = currentTime;
 
-  int hours = getHour();
-  int minutes = getMinute();
+    strip.setBrightness(getBrightness());
+    strip.show();
 
-  if (hours >= 12) hours -= 12;
+    int hours = getHour();
+    int minutes = getMinute();
 
-  if (hours != lastHour || minutes != lastMinute) {
-    updateWatchface(hours, minutes);
-    lastHour = hours;
-    lastMinute = minutes;
+    if (hours >= 12) hours -= 12;
+
+    if (hours != lastHour || minutes != lastMinute) {
+      updateWatchface(hours, minutes);
+      lastHour = hours;
+      lastMinute = minutes;
+    }
   }
 }
