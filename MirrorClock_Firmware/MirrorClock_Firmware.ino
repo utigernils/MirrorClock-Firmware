@@ -1,3 +1,4 @@
+#include "config.h"
 #include "wifi_connection.h"
 #include "web_api.h"
 #include "time_sync.h"
@@ -9,9 +10,6 @@ int lastHour = -1;
 int lastMinute = -1;
 
 unsigned long lastUpdateTime = 0;
-const unsigned long updateInterval = 100;
-
-const bool autoBrightness = false;
 
 void setup() {
   Serial.begin(115200);
@@ -31,10 +29,10 @@ void loop() {
   handleWebRequests();
 
   unsigned long currentTime = millis();
-  if (currentTime - lastUpdateTime >= updateInterval) {
+  if (currentTime - lastUpdateTime >= UPDATE_INTERVAL) {
     lastUpdateTime = currentTime;
 
-    if (autoBrightness) {
+    if (AUTO_BRIGHTNESS_ENABLED) {
       strip.setBrightness(getBrightness());
       strip.show();
     }

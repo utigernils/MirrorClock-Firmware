@@ -1,11 +1,9 @@
 #pragma once
 #include <ESP8266WiFi.h>
-
-const char *ssid = "...";
-const char *password = "...";
+#include "config.h"
 
 void connectToWiFi() {
-  WiFi.begin(ssid, password);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     delay(250);

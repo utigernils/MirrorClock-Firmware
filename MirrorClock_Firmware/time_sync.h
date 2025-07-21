@@ -1,11 +1,9 @@
 #pragma once
 #include <time.h>
-
-const char* TZ_EUROPE_ZURICH = "CET-1CEST,M3.5.0/2,M10.5.0/3";
-const char* NTP_SERVER = "pool.ntp.org";
+#include "config.h"
 
 void startNTP() {
-  configTime(TZ_EUROPE_ZURICH, NTP_SERVER);
+  configTime(TIMEZONE, NTP_SERVER);
 }
 
 bool getLocalTimeSafe(struct tm* timeinfo) {

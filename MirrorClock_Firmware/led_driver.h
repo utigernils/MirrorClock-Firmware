@@ -1,16 +1,7 @@
 #pragma once
 #include <Adafruit_NeoPixel.h>
 #include "lines.h"
-
-#define LED_PIN 3
-#define LED_COUNT 114
-
-int R = 255;
-int G = 255;
-int B = 255;
-int Brightness = 150;
-
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+#include "config.h"
 
 void setupLEDs() {
   strip.begin();
@@ -23,7 +14,7 @@ int roundTo5(int value) {
 }
 
 void lightLed(int x, int y) {
-  strip.setBrightness(Brightness);
+  strip.setBrightness(LED_BRIGHTNESS);
   int ledNum = 0;
   if (x <= 11 && y <= 10) {
     if (x % 2 != 0)
@@ -31,7 +22,7 @@ void lightLed(int x, int y) {
     else
       ledNum = ((11 - y) + ((x - 1) * 10));
 
-    strip.setPixelColor(ledNum - 1, strip.Color(R, G, B));
+    strip.setPixelColor(ledNum - 1, strip.Color(LED_R, LED_G, LED_B));
   }
 }
 
@@ -48,7 +39,7 @@ void updateWatchface(int hours, int minutes) {
   int remainder = minutes % 5;
   if (remainder != 0) {
     for (int i = 1; i <= remainder; i++) {
-      strip.setPixelColor(110 + i - 1, strip.Color(R, G, B));
+      strip.setPixelColor(110 + i - 1, strip.Color(LED_R, LED_G, LED_B));
     }
   }
 
