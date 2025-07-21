@@ -20,10 +20,9 @@ void setup() {
 
 void loop() {
   updateTime();
-  unsigned long epoch = getEpochTime();
 
-  int hours = ((epoch % 86400L) / 3600) + 1;
-  int minutes = (epoch % 3600) / 60;
+  int hours = getHour();
+  int minutes = getMinute();
 
   if (hours >= 12) hours -= 12;
 

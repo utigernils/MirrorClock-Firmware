@@ -16,3 +16,12 @@ void updateTime() {
 unsigned long getEpochTime() {
   return timeClient.getEpochTime();
 }
+
+int getHour() {
+  int hour = ((timeClient.getEpochTime() % 86400L) / 3600) + 1;
+  return (hour >= 24) ? hour - 24 : hour;
+}
+
+int getMinute() {
+  return (timeClient.getEpochTime() % 3600) / 60;
+}
