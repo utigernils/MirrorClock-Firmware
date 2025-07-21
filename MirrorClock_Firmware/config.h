@@ -13,6 +13,7 @@ extern int LED_G;
 extern int LED_B;
 extern int LED_BRIGHTNESS;
 extern bool LED_ENABLED;
+extern bool LED_AUTO_BRIGHTNESS;
 
 // ====== TIME CONFIGURATION ======
 extern const char* TIMEZONE;

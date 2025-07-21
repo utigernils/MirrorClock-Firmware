@@ -11,6 +11,7 @@ int LED_G = 255;
 int LED_B = 255;
 int LED_BRIGHTNESS = 150;
 bool LED_ENABLED = true;
+bool LED_AUTO_BRIGHTNESS = false;
 
 // ====== TIME CONFIGURATION ======
 const char* TIMEZONE = "CET-1CEST,M3.5.0/2,M10.5.0/3";

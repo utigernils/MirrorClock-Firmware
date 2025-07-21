@@ -29,8 +29,9 @@ void loop() {
   if (currentTime - lastUpdateTime >= UPDATE_INTERVAL) {
     lastUpdateTime = currentTime;
 
-    if (AUTO_BRIGHTNESS_ENABLED) {
-      strip.setBrightness(getBrightness());
+    if (LED_AUTO_BRIGHTNESS) {
+      LED_BRIGHTNESS = getBrightness();
+      strip.setBrightness(LED_BRIGHTNESS);
       strip.show();
     }
 

@@ -1,3 +1,17 @@
+/*
+ * MirrorClock Web API
+ * 
+ * Available Endpoints:
+ * 
+ * GET  /api/status     - Get comprehensive system status (JSON)
+ * POST /api/power      - Control LED on/off state (JSON body: {"enabled": true/false})
+ * POST /api/brightness - Set LED brightness (JSON body: {"brightness": 0-255} OR {"brightness": "auto"})
+ * POST /api/color      - Set LED color (JSON body: {"r":255,"g":255,"b":255} OR {"hex":"#FFFFFF"})
+ * 
+ * All POST endpoints require JSON body and return JSON responses
+ * All responses include success status, timestamp, message, and data fields
+ */
+
 #pragma once
 #include <ESP8266WebServer.h>
 #include <ArduinoJson.h>
@@ -52,6 +66,7 @@ void handleStatus() {
   
   doc["led"]["enabled"] = LED_ENABLED;
   doc["led"]["brightness"] = LED_BRIGHTNESS;
+  doc["led"]["auto_brightness"] = LED_AUTO_BRIGHTNESS;
   doc["led"]["color"]["r"] = LED_R;
   doc["led"]["color"]["g"] = LED_G;
   doc["led"]["color"]["b"] = LED_B;
@@ -129,6 +144,27 @@ void handleSetBrightness() {
     return;
   }
   
+  // Check if brightness is "auto" string or numeric value
+  if (doc["brightness"].is<String>()) {
+    String brightnessStr = doc["brightness"];
+    if (brightnessStr.equalsIgnoreCase("auto")) {
+      LED_AUTO_BRIGHTNESS = true;
+      
+      DynamicJsonDocument responseData(128);
+      responseData["brightness"] = "auto";
+      responseData["auto_brightness"] = LED_AUTO_BRIGHTNESS;
+      String dataStr;
+      serializeJson(responseData, dataStr);
+      
+      server.send(200, "application/json", createJsonResponse(true, "Auto brightness enabled", dataStr));
+      return;
+    } else {
+      server.send(400, "application/json", createJsonResponse(false, "Invalid brightness value. Use numeric value (0-255) or 'auto'"));
+      return;
+    }
+  }
+  
+  // Handle numeric brightness value
   int brightness = doc["brightness"];
   
   if (brightness < 0 || brightness > 255) {
@@ -136,6 +172,7 @@ void handleSetBrightness() {
     return;
   }
   
+  LED_AUTO_BRIGHTNESS = false;  // Disable auto brightness when setting manual value
   LED_BRIGHTNESS = brightness;
   if (LED_ENABLED) {
     strip.setBrightness(LED_BRIGHTNESS);
@@ -144,6 +181,7 @@ void handleSetBrightness() {
   
   DynamicJsonDocument responseData(128);
   responseData["brightness"] = LED_BRIGHTNESS;
+  responseData["auto_brightness"] = LED_AUTO_BRIGHTNESS;
   String dataStr;
   serializeJson(responseData, dataStr);
   
