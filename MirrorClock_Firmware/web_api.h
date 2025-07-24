@@ -85,6 +85,105 @@ void handleStatus() {
   server.send(200, "application/json", response);
 }
 
+void handleControl() {
+  server.send(200, "text/html",
+    "<!DOCTYPE html>"
+    "<html lang='de'>"
+    "<head>"
+    "<meta charset='UTF-8' />"
+    "<meta name='viewport' content='width=device-width, initial-scale=1.0' />"
+    "<title>LED Steuerung</title>"
+    "<style>"
+    "body { font-family: sans-serif; background: #f2f2f2; padding: 1rem; max-width: 400px; margin: auto; }"
+    "h1 { font-size: 1.2rem; }"
+    "label { display: block; margin-top: 1rem; }"
+    "input[type='range'] { width: 100%; }"
+    "input, button, select { font-size: 1rem; padding: 0.4rem; width: 100%; box-sizing: border-box; margin-top: 0.3rem; }"
+    "button { background: #007bff; color: white; border: none; cursor: pointer; }"
+    "button:hover { background: #0056b3; }"
+    "pre { background: #eee; padding: 0.5rem; overflow: auto; font-size: 0.8rem; }"
+    "</style>"
+    "</head>"
+    "<body>"
+    "<h1>LED Steuerung</h1>"
+
+    "<label>"
+    "LED Status:"
+    "<select id='power'>"
+    "<option value='true'>An</option>"
+    "<option value='false'>Aus</option>"
+    "</select>"
+    "</label>"
+
+    "<label>"
+    "Helligkeit:"
+    "<input type='range' id='brightness' min='0' max='255' />"
+    "<button onclick='setAutoBrightness()'>Auto</button>"
+    "</label>"
+
+    "<label>"
+    "Farbe:"
+    "<input type='color' id='color' value='#ffffff' />"
+    "</label>"
+
+    "<button onclick='applySettings()'>Übernehmen</button>"
+
+    "<h2>Status</h2>"
+    "<button onclick='loadStatus()'>Aktualisieren</button>"
+    "<pre id='status'>...</pre>"
+
+    "<script>"
+    "function applySettings() {"
+    "  const power = document.getElementById('power').value === 'true';"
+    "  const brightness = parseInt(document.getElementById('brightness').value);"
+    "  const hex = document.getElementById('color').value;"
+
+    "  fetch('/api/power', {"
+    "    method: 'POST',"
+    "    headers: { 'Content-Type': 'application/json' },"
+    "    body: JSON.stringify({ enabled: power })"
+    "  });"
+
+    "  fetch('/api/brightness', {"
+    "    method: 'POST',"
+    "    headers: { 'Content-Type': 'application/json' },"
+    "    body: JSON.stringify({ brightness: brightness })"
+    "  });"
+
+    "  fetch('/api/color', {"
+    "    method: 'POST',"
+    "    headers: { 'Content-Type': 'application/json' },"
+    "    body: JSON.stringify({ hex: hex })"
+    "  });"
+
+    "  setTimeout(loadStatus, 500);"
+    "}"
+
+    "function setAutoBrightness() {"
+    "  fetch('/api/brightness', {"
+    "    method: 'POST',"
+    "    headers: { 'Content-Type': 'application/json' },"
+    "    body: JSON.stringify({ brightness: 'auto' })"
+    "  });"
+    "  setTimeout(loadStatus, 500);"
+    "}"
+
+    "function loadStatus() {"
+    "  fetch('/api/status')"
+    "    .then(res => res.json())"
+    "    .then(data => {"
+    "      document.getElementById('status').textContent = JSON.stringify(data, null, 2);"
+    "    });"
+    "}"
+
+    "loadStatus();"
+    "</script>"
+    "</body>"
+    "</html>"
+  );
+}
+
+
 void handlePower() {
   #if DEBUG_ENABLED
     Serial.println(DEBUG_PREFIX_WEB "API call: /api/power");
@@ -278,6 +377,11 @@ void setupWebAPI() {
   server.on("/api/status", HTTP_GET, []() {
     server.sendHeader("Access-Control-Allow-Origin", "*");
     handleStatus();
+  });
+
+  server.on("/", HTTP_GET, []() {
+    server.sendHeader("Access-Control-Allow-Origin", "*");
+    handleControl();
   });
   
   server.on("/api/power", HTTP_POST, []() {
