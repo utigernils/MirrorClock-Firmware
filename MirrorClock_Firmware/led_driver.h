@@ -63,7 +63,7 @@ void updateWatchface(int hours, int minutes) {
     case 10: lightLine(TEN); lightLine(AFTER); break;
     case 15: lightLine(QUARTER); lightLine(AFTER); break;
     case 20: lightLine(TWENTY); lightLine(AFTER); break;
-    case 25: lightLine(FIVE); lightLine(BEFORE); lightLine(HALF); break;
+    case 25: lightLine(FIVE); lightLine(BEFORE); lightLine(HALF); hours++; break;
     case 30: lightLine(HALF); hours++; break;
     case 35: lightLine(FIVE); lightLine(AFTER); lightLine(HALF); hours++; break;
     case 40: lightLine(TWENTY); lightLine(BEFORE); hours++; break;
