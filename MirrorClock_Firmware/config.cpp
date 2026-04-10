@@ -15,6 +15,15 @@ bool LED_AUTO_BRIGHTNESS = false;
 String TIMEZONE = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 String NTP_SERVER = "pool.ntp.org";
 
+// ====== LIGHT SENSOR CONFIGURATION ======
+int LIGHT_SENSOR_SDA = D4;
+int LIGHT_SENSOR_SCL = D3;
+int LIGHT_SENSOR_MAX_LUX = 200;
+int LIGHT_SENSOR_MIN_LUX = 0;
+int LIGHT_SENSOR_CALIBRATION_MAX = 10;
+int LIGHT_SENSOR_MIN_BRIGHTNESS = 5;
+int LIGHT_SENSOR_MAX_BRIGHTNESS = 255;
+
 // ====== MAIN LOOP CONFIGURATION ======
 const unsigned long UPDATE_INTERVAL = 100;
 const bool AUTO_BRIGHTNESS_ENABLED = false;
@@ -22,6 +31,9 @@ const bool AUTO_BRIGHTNESS_ENABLED = false;
 // ====== GLOBAL STATE VARIABLES ======
 int lastHour = -1;
 int lastMinute = -1;
+
+// ====== WEB SERVER CONFIGURATION ======
+int WEB_SERVER_PORT = 80;
 
 // ====== CONFIGURATION MANAGEMENT ======
 void loadConfig() {
@@ -37,6 +49,16 @@ void loadConfig() {
     TIMEZONE = preferences.getString("tz", "CET-1CEST,M3.5.0/2,M10.5.0/3");
     NTP_SERVER = preferences.getString("ntp", "pool.ntp.org");
     
+    LIGHT_SENSOR_SDA = preferences.getInt("ls_sda", D4);
+    LIGHT_SENSOR_SCL = preferences.getInt("ls_scl", D3);
+    LIGHT_SENSOR_MAX_LUX = preferences.getInt("ls_max_l", 200);
+    LIGHT_SENSOR_MIN_LUX = preferences.getInt("ls_min_l", 0);
+    LIGHT_SENSOR_CALIBRATION_MAX = preferences.getInt("ls_cal_m", 10);
+    LIGHT_SENSOR_MIN_BRIGHTNESS = preferences.getInt("ls_min_b", 5);
+    LIGHT_SENSOR_MAX_BRIGHTNESS = preferences.getInt("ls_max_b", 255);
+
+    WEB_SERVER_PORT = preferences.getInt("web_port", 80);
+
     preferences.end();
 }
 
@@ -53,5 +75,15 @@ void saveConfig() {
     preferences.putString("tz", TIMEZONE);
     preferences.putString("ntp", NTP_SERVER);
     
+    preferences.putInt("ls_sda", LIGHT_SENSOR_SDA);
+    preferences.putInt("ls_scl", LIGHT_SENSOR_SCL);
+    preferences.putInt("ls_max_l", LIGHT_SENSOR_MAX_LUX);
+    preferences.putInt("ls_min_l", LIGHT_SENSOR_MIN_LUX);
+    preferences.putInt("ls_cal_m", LIGHT_SENSOR_CALIBRATION_MAX);
+    preferences.putInt("ls_min_b", LIGHT_SENSOR_MIN_BRIGHTNESS);
+    preferences.putInt("ls_max_b", LIGHT_SENSOR_MAX_BRIGHTNESS);
+
+    preferences.putInt("web_port", WEB_SERVER_PORT);
+
     preferences.end();
 }

@@ -20,10 +20,6 @@ public:
     App() : webApi(networkManager, timeManager, leds, sensor) {}
 
     void setup() {
-        Serial.begin(115200);
-
-        loadConfig();
-        
         #if DEBUG_ENABLED
             delay(3000);
             Serial.println("\n==================================================");

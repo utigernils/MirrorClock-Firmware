@@ -21,13 +21,13 @@ extern String TIMEZONE;
 extern String NTP_SERVER;
 
 // ====== LIGHT SENSOR CONFIGURATION ======
-#define LIGHT_SENSOR_SDA D4
-#define LIGHT_SENSOR_SCL D3
-#define LIGHT_SENSOR_MAX_LUX 200
-#define LIGHT_SENSOR_MIN_LUX 0
-#define LIGHT_SENSOR_CALIBRATION_MAX 10
-#define LIGHT_SENSOR_MIN_BRIGHTNESS 5
-#define LIGHT_SENSOR_MAX_BRIGHTNESS 255
+extern int LIGHT_SENSOR_SDA;
+extern int LIGHT_SENSOR_SCL;
+extern int LIGHT_SENSOR_MAX_LUX;
+extern int LIGHT_SENSOR_MIN_LUX;
+extern int LIGHT_SENSOR_CALIBRATION_MAX;
+extern int LIGHT_SENSOR_MIN_BRIGHTNESS;
+extern int LIGHT_SENSOR_MAX_BRIGHTNESS;
 
 // ====== MAIN LOOP CONFIGURATION ======
 extern const unsigned long UPDATE_INTERVAL;
@@ -38,7 +38,7 @@ extern int lastHour;
 extern int lastMinute;
 
 // ====== WEB SERVER CONFIGURATION ======
-#define WEB_SERVER_PORT 80
+extern int WEB_SERVER_PORT;
 
 // ====== DEBUG CONFIGURATION ======
 #define DEBUG_ENABLED true
