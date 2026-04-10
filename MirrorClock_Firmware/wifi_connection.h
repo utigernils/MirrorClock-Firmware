@@ -1,22 +1,22 @@
 #pragma once
 #include <ESP8266WiFi.h>
+#include <WiFiManager.h>
 #include "config.h"
 
 void connectToWiFi() {
   #if DEBUG_ENABLED
-    Serial.println(DEBUG_PREFIX_WIFI "Connecting to '" + String(WIFI_SSID) + "'...");
+    Serial.println(DEBUG_PREFIX_WIFI "Connecting to WiFi or starting setup portal...");
   #endif
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   
-  int attempts = 0;
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    attempts++;
+  WiFiManager wifiManager;
+  
+  if (!wifiManager.autoConnect("MirrorClock-Setup")) {
     #if DEBUG_ENABLED
-      if (attempts % 10 == 0) {
-        Serial.println(DEBUG_PREFIX_WIFI "Still connecting... (" + String(attempts * 0.5) + "s)");
-      }
+      Serial.println(DEBUG_PREFIX_WIFI "Failed to connect and hit timeout");
     #endif
+    // Reset and try again
+    ESP.restart();
+    delay(1000);
   }
   
   #if DEBUG_ENABLED
