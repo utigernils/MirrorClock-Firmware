@@ -46,6 +46,8 @@ export interface DeviceState {
 export interface DeviceConfig {
   led_pin: number;
   led_count: number;
+  transition_effect: number;
+  transition_duration: number;
   timezone: string;
   ntp_server: string;
   sensor_sda: number;

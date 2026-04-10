@@ -13,6 +13,10 @@ int LED_BRIGHTNESS = 150;
 bool LED_ENABLED = true;
 bool LED_AUTO_BRIGHTNESS = false;
 
+// ====== TRANSITION CONFIGURATION ======
+int TRANSITION_EFFECT = 0;
+int TRANSITION_DURATION = 1000;
+
 // ====== TIME CONFIGURATION ======
 String TIMEZONE = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 String NTP_SERVER = "pool.ntp.org";
@@ -58,6 +62,9 @@ void loadConfig() {
     LED_ENABLED = preferences.getBool("led_en", true);
     LED_AUTO_BRIGHTNESS = preferences.getBool("led_auto", false);
     
+    TRANSITION_EFFECT = preferences.getInt("trans_ef", 0);
+    TRANSITION_DURATION = preferences.getInt("trans_dur", 1000);
+    
     TIMEZONE = preferences.getString("tz", "CET-1CEST,M3.5.0/2,M10.5.0/3");
     NTP_SERVER = preferences.getString("ntp", "pool.ntp.org");
     
@@ -93,6 +100,9 @@ void saveConfig() {
     preferences.putInt("led_g", LED_G);
     preferences.putInt("led_b", LED_B);
     preferences.putInt("led_brt", LED_BRIGHTNESS);
+    preferences.putInt("trans_ef", TRANSITION_EFFECT);
+    preferences.putInt("trans_dur", TRANSITION_DURATION);
+
     preferences.putBool("led_en", LED_ENABLED);
     preferences.putBool("led_auto", LED_AUTO_BRIGHTNESS);
     

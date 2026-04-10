@@ -15,6 +15,10 @@ extern int LED_BRIGHTNESS;
 extern bool LED_ENABLED;
 extern bool LED_AUTO_BRIGHTNESS;
 
+// ====== TRANSITION CONFIGURATION ======
+extern int TRANSITION_EFFECT;
+extern int TRANSITION_DURATION;
+
 // ====== TIME CONFIGURATION ======
 #include <Arduino.h>
 extern String TIMEZONE;
