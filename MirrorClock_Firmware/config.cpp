@@ -4,6 +4,8 @@
 Preferences preferences;
 
 // ====== LED CONFIGURATION ======
+int LED_PIN = 3;
+int LED_COUNT = 114;
 int LED_R = 255;
 int LED_G = 255;
 int LED_B = 255;
@@ -25,8 +27,8 @@ int LIGHT_SENSOR_MIN_BRIGHTNESS = 5;
 int LIGHT_SENSOR_MAX_BRIGHTNESS = 255;
 
 // ====== MAIN LOOP CONFIGURATION ======
-const unsigned long UPDATE_INTERVAL = 100;
-const bool AUTO_BRIGHTNESS_ENABLED = false;
+unsigned long UPDATE_INTERVAL = 100;
+bool AUTO_BRIGHTNESS_ENABLED = false;
 
 // ====== GLOBAL STATE VARIABLES ======
 int lastHour = -1;
@@ -39,6 +41,8 @@ int WEB_SERVER_PORT = 80;
 void loadConfig() {
     preferences.begin("mirrorclock", false);
     
+    LED_PIN = preferences.getInt("led_pin", 3);
+    LED_COUNT = preferences.getInt("led_cnt", 114);
     LED_R = preferences.getInt("led_r", 255);
     LED_G = preferences.getInt("led_g", 255);
     LED_B = preferences.getInt("led_b", 255);
@@ -57,6 +61,9 @@ void loadConfig() {
     LIGHT_SENSOR_MIN_BRIGHTNESS = preferences.getInt("ls_min_b", 5);
     LIGHT_SENSOR_MAX_BRIGHTNESS = preferences.getInt("ls_max_b", 255);
 
+    UPDATE_INTERVAL = preferences.getULong("upd_int", 100);
+    AUTO_BRIGHTNESS_ENABLED = preferences.getBool("auto_brt", false);
+
     WEB_SERVER_PORT = preferences.getInt("web_port", 80);
 
     preferences.end();
@@ -65,6 +72,8 @@ void loadConfig() {
 void saveConfig() {
     preferences.begin("mirrorclock", false);
     
+    preferences.putInt("led_pin", LED_PIN);
+    preferences.putInt("led_cnt", LED_COUNT);
     preferences.putInt("led_r", LED_R);
     preferences.putInt("led_g", LED_G);
     preferences.putInt("led_b", LED_B);
@@ -82,6 +91,9 @@ void saveConfig() {
     preferences.putInt("ls_cal_m", LIGHT_SENSOR_CALIBRATION_MAX);
     preferences.putInt("ls_min_b", LIGHT_SENSOR_MIN_BRIGHTNESS);
     preferences.putInt("ls_max_b", LIGHT_SENSOR_MAX_BRIGHTNESS);
+
+    preferences.putULong("upd_int", UPDATE_INTERVAL);
+    preferences.putBool("auto_brt", AUTO_BRIGHTNESS_ENABLED);
 
     preferences.putInt("web_port", WEB_SERVER_PORT);
 

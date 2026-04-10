@@ -5,8 +5,8 @@ void loadConfig();
 void saveConfig();
 
 // ====== LED CONFIGURATION ======
-#define LED_PIN 3
-#define LED_COUNT 114
+extern int LED_PIN;
+extern int LED_COUNT;
 
 extern int LED_R;
 extern int LED_G;
@@ -30,8 +30,8 @@ extern int LIGHT_SENSOR_MIN_BRIGHTNESS;
 extern int LIGHT_SENSOR_MAX_BRIGHTNESS;
 
 // ====== MAIN LOOP CONFIGURATION ======
-extern const unsigned long UPDATE_INTERVAL;
-extern const bool AUTO_BRIGHTNESS_ENABLED;
+extern unsigned long UPDATE_INTERVAL;
+extern bool AUTO_BRIGHTNESS_ENABLED;
 
 // ====== GLOBAL STATE VARIABLES ======
 extern int lastHour;
