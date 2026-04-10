@@ -143,6 +143,9 @@ public:
         doc["led_pin"] = LED_PIN;
         doc["led_count"] = LED_COUNT;
         
+        doc["transition_effect"] = TRANSITION_EFFECT;
+        doc["transition_duration"] = TRANSITION_DURATION;
+        
         doc["timezone"] = TIMEZONE;
         doc["ntp_server"] = NTP_SERVER;
         
@@ -178,6 +181,9 @@ public:
         
         if (doc.containsKey("led_pin")) LED_PIN = doc["led_pin"];
         if (doc.containsKey("led_count")) LED_COUNT = doc["led_count"];
+        
+        if (doc.containsKey("transition_effect")) TRANSITION_EFFECT = doc["transition_effect"];
+        if (doc.containsKey("transition_duration")) TRANSITION_DURATION = doc["transition_duration"];
         
         if (doc.containsKey("timezone")) TIMEZONE = String((const char*)doc["timezone"]);
         if (doc.containsKey("ntp_server")) NTP_SERVER = String((const char*)doc["ntp_server"]);

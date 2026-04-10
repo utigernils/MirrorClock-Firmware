@@ -140,6 +140,8 @@ Retrieves hardware and software configuration values saved on the device.
   "data": {
     "led_pin": 4,
     "led_count": 60,
+    "transition_effect": 0,
+    "transition_duration": 1000,
     "timezone": "CET-1CEST,M3.5.0,M10.5.0/3",
     "ntp_server": "pool.ntp.org",
     "sensor_sda": 4,
@@ -180,7 +182,9 @@ Updates the configuration values. Settings are persisted to memory automatically
 {
   "timezone": "EST5EDT",
   "ntp_server": "time.google.com",
-  "sensor_max_brightness": 200
+  "sensor_max_brightness": 200,
+  "transition_effect": 1,
+  "transition_duration": 1500
 }
 ```
 
