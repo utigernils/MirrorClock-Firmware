@@ -1,8 +1,5 @@
 #pragma once
 
-// ====== WIFI CONFIGURATION ======
-extern const char* WIFI_SSID;
-extern const char* WIFI_PASSWORD;
 
 // ====== LED CONFIGURATION ======
 #define LED_PIN 3

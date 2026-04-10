@@ -1,9 +1,6 @@
 #include "config.h"
 #include <Adafruit_NeoPixel.h>
 
-// ====== WIFI CONFIGURATION ======
-const char* WIFI_SSID = "...";
-const char* WIFI_PASSWORD = "...";
 
 // ====== LED CONFIGURATION ======
 int LED_R = 255;
