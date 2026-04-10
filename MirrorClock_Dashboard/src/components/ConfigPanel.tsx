@@ -12,10 +12,22 @@ interface ConfigPanelProps {
 interface FieldDef {
   key: keyof DeviceConfig;
   label: string;
-  type: 'text' | 'number' | 'boolean' | 'password';
+  type: 'text' | 'number' | 'boolean' | 'password' | 'select';
+  options?: { label: string; value: number }[];
 }
 
 const FIELDS: FieldDef[] = [
+  { 
+    key: 'transition_effect', 
+    label: 'Transition Effect', 
+    type: 'select',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'Crossfade', value: 1 },
+      { label: 'Typewriter', value: 2 },
+    ]
+  },
+  { key: 'transition_duration', label: 'Transition Duration (ms)', type: 'number' },
   { key: 'timezone', label: 'Timezone', type: 'text' },
   { key: 'ntp_server', label: 'NTP Server', type: 'text' },
   { key: 'update_interval', label: 'Update Interval (ms)', type: 'number' },
@@ -169,6 +181,25 @@ function ConfigField({ field, value, onChange }: ConfigFieldProps) {
             }`}
           />
         </button>
+      </div>
+    );
+  }
+
+  if (field.type === 'select' && field.options) {
+    return (
+      <div className="py-1">
+        <label className="text-[10px] tracking-widest uppercase text-zinc-600 block mb-1">{field.label}</label>
+        <select
+          value={value as number}
+          onChange={(e) => onChange(field.key, Number(e.target.value))}
+          className="w-full bg-zinc-800 border border-zinc-700 text-white text-xs font-mono px-3 py-2 focus:outline-none focus:border-zinc-500"
+        >
+          {field.options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
       </div>
     );
   }

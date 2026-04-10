@@ -91,7 +91,6 @@ public:
             LED_ENABLED = doc["enabled"];
             if (!LED_ENABLED) {
                 leds.clear();
-                leds.show();
             }
             changed = true;
         }

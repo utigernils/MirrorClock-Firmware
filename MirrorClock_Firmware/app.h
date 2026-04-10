@@ -41,10 +41,6 @@ public:
         sensor.begin();
         webApi.begin();
         mqttManager.begin();
-
-        leds.lightLinePublic(IT);
-        leds.lightLinePublic(IS);
-        leds.show();
         
         #if DEBUG_ENABLED
             Serial.println(DEBUG_PREFIX_SYSTEM "Startup complete - entering main loop");
@@ -55,6 +51,7 @@ public:
     void loop() {
         webApi.handleClient();
         mqttManager.loop();
+        leds.loop(); // Render transitions frame-by-frame
 
         unsigned long currentTime = millis();
         if (currentTime - lastUpdateTime >= UPDATE_INTERVAL) {
@@ -70,8 +67,7 @@ public:
 
             if (LED_AUTO_BRIGHTNESS) {
                 LED_BRIGHTNESS = sensor.getBrightness();
-                leds.setBrightness(LED_BRIGHTNESS);
-                leds.show();
+                // leds.loop() handles the brightness update
             }
 
             int hours = timeManager.getHour();
