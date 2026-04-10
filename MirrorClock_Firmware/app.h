@@ -4,7 +4,9 @@
 #include "time_sync.h"
 #include "led_driver.h"
 #include "light_sensor.h"
+#include "core_api.h"
 #include "web_api.h"
+#include "mqtt_manager.h"
 
 class App {
 private:
@@ -12,12 +14,16 @@ private:
     TimeManager timeManager;
     LedDriver leds;
     LightSensor sensor;
+    CoreApi coreApi;
     WebApi webApi;
+    MqttManager mqttManager;
 
     unsigned long lastUpdateTime = 0;
 
 public:
-    App() : webApi(networkManager, timeManager, leds, sensor) {}
+    App() : coreApi(networkManager, timeManager, leds, sensor),
+            webApi(coreApi),
+            mqttManager(coreApi) {}
 
     void setup() {
         #if DEBUG_ENABLED
@@ -34,6 +40,7 @@ public:
         leds.begin();
         sensor.begin();
         webApi.begin();
+        mqttManager.begin();
 
         leds.lightLinePublic(IT);
         leds.lightLinePublic(IS);
@@ -47,6 +54,7 @@ public:
 
     void loop() {
         webApi.handleClient();
+        mqttManager.loop();
 
         unsigned long currentTime = millis();
         if (currentTime - lastUpdateTime >= UPDATE_INTERVAL) {
