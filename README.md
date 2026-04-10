@@ -1,7 +1,11 @@
-# MirrorClock-Firmware
+<p align="center">
+  <img src="MirrorClock_HA-integration/custom_components/mirrorclock/icon.png" alt="MirrorClock Logo" width="200">
+</p>
+
+# MirrorClock-Firmware v1.1.0
 
 ## Overview
-MirrorClock-Firmware is a modern, efficient firmware designed for the "23-er Platine" from Bastelgarage.ch. This firmware provides a clean REST API interface for remote control and monitoring, with improved code structure and stability compared to the original firmware.
+MirrorClock-Firmware is a modern, efficient firmware designed for the "23-er Platine" from Bastelgarage.ch. This firmware provides smooth LED control, a modern web dashboard, seamless Home Assistant integration, and a clean REST API interface for remote control and monitoring, with improved code structure and stability compared to the original firmware.
 
 ## Features
 ### Core Functionality
@@ -10,17 +14,9 @@ MirrorClock-Firmware is a modern, efficient firmware designed for the "23-er Pla
 - **Automatic Time Sync**: NTP-based time synchronization with configurable timezone
 - **Auto Brightness**: BH1750 light sensor for automatic brightness adjustment
 - **WiFi Connectivity**: Reliable WiFi connection with connection monitoring
-
-> [!IMPORTANT]
-> The MQTT Functionality was removed and is only available in older (buggy) versions.
-
-### REST API Control
-The firmware provides a comprehensive REST API for remote control:
-
-- **GET /api/status**: Comprehensive system status (uptime, memory, WiFi, time, LED state, sensor readings)
-- **POST /api/power**: Control LED on/off state (`{"enabled": true/false}`)
-- **POST /api/brightness**: Set brightness manually (`{"brightness": 0-255}`) or enable auto mode (`{"brightness": "auto"}`)
-- **POST /api/color**: Set LED color via RGB (`{"r":255,"g":255,"b":255}`) or hex (`{"hex":"#FFFFFF"}`)
+- **Web Dashboard**: An integrated modern React-based web interface for easy configuration and control
+- **Home Assistant Integration**: Native custom component for seamless integration into your smart home
+- **MQTT Support**: Completely rewritten, flawless MQTT integration for reliable communication with third-party systems
 
 ### Hardware Support
 - **ESP8266**: Optimized for ESP8266 microcontroller
@@ -59,7 +55,7 @@ Enable debug output by setting `DEBUG_ENABLED true` in `config.h`.
 2. **Configuration**: Update WiFi credentials and hardware pins in config files
 3. **Upload**: Flash the firmware to your ESP8266 using Arduino IDE
 4. **Connect**: The device will connect to WiFi and start the web server on port 80
-5. **Control**: Use the REST API endpoints to control the clock remotely
+5. **Control**: Open the IP address in your browser to access the Web Dashboard, or integrate it with Home Assistant.
 
 ### Arduino IDE Setup
 Required libraries:
@@ -70,50 +66,9 @@ Required libraries:
 - ArduinoJson
 - Time
 
-## API Examples
-### Get System Status
-```bash
-curl http://your-clock-ip/api/status
-```
-
-### Control Power
-```bash
-# Turn LEDs on
-curl -X POST http://your-clock-ip/api/power \
-  -H "Content-Type: application/json" \
-  -d '{"enabled": true}'
-
-# Turn LEDs off
-curl -X POST http://your-clock-ip/api/power \
-  -H "Content-Type: application/json" \
-  -d '{"enabled": false}'
-```
-
-### Set Brightness
-```bash
-# Manual brightness (0-255)
-curl -X POST http://your-clock-ip/api/brightness \
-  -H "Content-Type: application/json" \
-  -d '{"brightness": 128}'
-
-# Auto brightness
-curl -X POST http://your-clock-ip/api/brightness \
-  -H "Content-Type: application/json" \
-  -d '{"brightness": "auto"}'
-```
-
-### Change Color
-```bash
-# RGB values
-curl -X POST http://your-clock-ip/api/color \
-  -H "Content-Type: application/json" \
-  -d '{"r": 255, "g": 100, "b": 0}'
-
-# Hex color
-curl -X POST http://your-clock-ip/api/color \
-  -H "Content-Type: application/json" \
-  -d '{"hex": "#FF6400"}'
-```
+## REST API Reference
+The firmware provides a comprehensive REST API for remote control.
+For full details, endpoints, and examples, please see the [API Reference](API_REFERENCE.md).
 
 ## File Structure
 ```
@@ -126,7 +81,11 @@ MirrorClock_Firmware/
 ├── time_sync.h                 # NTP time synchronization
 ├── led_driver.h                # NeoPixel LED control
 ├── light_sensor.h              # BH1750 sensor interface
+├── mqtt_manager.h              # MQTT communication module
 └── lines.h                     # Word clock LED mapping
+
+MirrorClock_Dashboard/          # React-based web dashboard
+MirrorClock_HA-integration/     # Home Assistant custom component
 ```
 
 ## Troubleshooting
@@ -135,6 +94,7 @@ MirrorClock_Firmware/
 - **Time Not Syncing**: Verify internet connection and NTP server access
 - **LEDs Not Working**: Check LED pin configuration and power supply
 - **API Not Responding**: Ensure device is connected to WiFi and check IP address
+- **Dashboard Not Loading**: Ensure the firmware contains the statically compiled dashboard header or rebuild the dashboard.
 
 ### Debug Output
 Enable debug mode in `config.h` and monitor serial output at 115200 baud for detailed diagnostic information.
