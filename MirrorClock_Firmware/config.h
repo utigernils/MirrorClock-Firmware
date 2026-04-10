@@ -40,6 +40,14 @@ extern int lastMinute;
 // ====== WEB SERVER CONFIGURATION ======
 extern int WEB_SERVER_PORT;
 
+// ====== MQTT CONFIGURATION ======
+extern bool MQTT_ENABLED;
+extern String MQTT_BROKER;
+extern int MQTT_PORT;
+extern String MQTT_USER;
+extern String MQTT_PASSWORD;
+extern String MQTT_TOPIC_PREFIX;
+
 // ====== DEBUG CONFIGURATION ======
 #define DEBUG_ENABLED true
 #define DEBUG_PREFIX_WIFI    "[WIFI] "

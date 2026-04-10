@@ -37,6 +37,14 @@ int lastMinute = -1;
 // ====== WEB SERVER CONFIGURATION ======
 int WEB_SERVER_PORT = 80;
 
+// ====== MQTT CONFIGURATION ======
+bool MQTT_ENABLED = false;
+String MQTT_BROKER = "192.168.1.100";
+int MQTT_PORT = 1883;
+String MQTT_USER = "";
+String MQTT_PASSWORD = "";
+String MQTT_TOPIC_PREFIX = "mirrorclock";
+
 // ====== CONFIGURATION MANAGEMENT ======
 void loadConfig() {
     preferences.begin("mirrorclock", false);
@@ -65,6 +73,13 @@ void loadConfig() {
     AUTO_BRIGHTNESS_ENABLED = preferences.getBool("auto_brt", false);
 
     WEB_SERVER_PORT = preferences.getInt("web_port", 80);
+
+    MQTT_ENABLED = preferences.getBool("mqtt_en", false);
+    MQTT_BROKER = preferences.getString("mqtt_ip", "192.168.1.100");
+    MQTT_PORT = preferences.getInt("mqtt_p", 1883);
+    MQTT_USER = preferences.getString("mqtt_u", "");
+    MQTT_PASSWORD = preferences.getString("mqtt_pw", "");
+    MQTT_TOPIC_PREFIX = preferences.getString("mqtt_top", "mirrorclock");
 
     preferences.end();
 }
@@ -96,6 +111,13 @@ void saveConfig() {
     preferences.putBool("auto_brt", AUTO_BRIGHTNESS_ENABLED);
 
     preferences.putInt("web_port", WEB_SERVER_PORT);
+
+    preferences.putBool("mqtt_en", MQTT_ENABLED);
+    preferences.putString("mqtt_ip", MQTT_BROKER);
+    preferences.putInt("mqtt_p", MQTT_PORT);
+    preferences.putString("mqtt_u", MQTT_USER);
+    preferences.putString("mqtt_pw", MQTT_PASSWORD);
+    preferences.putString("mqtt_top", MQTT_TOPIC_PREFIX);
 
     preferences.end();
 }
