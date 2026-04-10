@@ -1,6 +1,7 @@
 #pragma once
 #include <ESP8266WebServer.h>
 #include "core_api.h"
+#include "web_dashboard.h"
 
 class WebApi {
 private:
@@ -25,6 +26,11 @@ public:
             } else {
                 server.send(404, "application/json", api.createJsonResponse(false, "Endpoint not found"));
             }
+        });
+        
+        server.on("/", HTTP_GET, [this]() {
+            server.sendHeader("Content-Encoding", "gzip");
+            server.send_P(200, "text/html", (const char*)DASHBOARD_HTML_GZ, DASHBOARD_HTML_SIZE);
         });
         
         server.on("/api/status", HTTP_GET, [this]() {
