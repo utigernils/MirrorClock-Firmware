@@ -8,7 +8,7 @@ private:
 
 public:
     void begin() {
-        configTime(TIMEZONE, NTP_SERVER);
+        configTime(TIMEZONE.c_str(), NTP_SERVER.c_str());
         #if DEBUG_ENABLED
             Serial.println(DEBUG_PREFIX_TIME "NTP sync started with " + String(NTP_SERVER));
         #endif

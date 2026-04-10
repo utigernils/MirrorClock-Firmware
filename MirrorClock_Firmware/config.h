@@ -1,5 +1,9 @@
 #pragma once
 
+// ====== CONFIGURATION MANAGEMENT ======
+void loadConfig();
+void saveConfig();
+
 // ====== LED CONFIGURATION ======
 #define LED_PIN 3
 #define LED_COUNT 114
@@ -12,8 +16,9 @@ extern bool LED_ENABLED;
 extern bool LED_AUTO_BRIGHTNESS;
 
 // ====== TIME CONFIGURATION ======
-extern const char* TIMEZONE;
-extern const char* NTP_SERVER;
+#include <Arduino.h>
+extern String TIMEZONE;
+extern String NTP_SERVER;
 
 // ====== LIGHT SENSOR CONFIGURATION ======
 #define LIGHT_SENSOR_SDA D4

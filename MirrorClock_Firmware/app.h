@@ -21,6 +21,8 @@ public:
 
     void setup() {
         Serial.begin(115200);
+
+        loadConfig();
         
         #if DEBUG_ENABLED
             delay(3000);
