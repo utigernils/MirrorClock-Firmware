@@ -11,6 +11,9 @@ private:
     bool is_transitioning = false;
     unsigned long transition_start = 0;
 
+    int current_r = -1, current_g = -1, current_b = -1, current_brt = -1;
+    int start_r = 0, start_g = 0, start_b = 0, start_brt = 0;
+
     int roundTo5(int value) {
         return (value / 5) * 5;
     }
@@ -123,6 +126,15 @@ public:
     }
 
     void startTransition() {
+        if (current_r == -1) {
+            current_r = LED_R; current_g = LED_G; current_b = LED_B; current_brt = LED_BRIGHTNESS;
+        }
+        
+        start_r = current_r;
+        start_g = current_g;
+        start_b = current_b;
+        start_brt = current_brt;
+
         if (TRANSITION_EFFECT == 0 || TRANSITION_DURATION == 0) {
             // Immediate transition
             for (int i = 0; i < LED_COUNT; i++) {
@@ -137,15 +149,13 @@ public:
     }
 
     void loop() {
+        // Trigger transition if color/brightness was changed manually (e.g. from API/HomeAssistant)
         if (!is_transitioning) {
-            // If color/brightness changed while not transitioning, just reapply
-            static int lastR = -1;
-            static int lastG = -1;
-            static int lastB = -1;
-            static int lastBrt = -1;
-            if (lastR != LED_R || lastG != LED_G || lastB != LED_B || lastBrt != LED_BRIGHTNESS) {
-               applyCurrentState();
-               lastR = LED_R; lastG = LED_G; lastB = LED_B; lastBrt = LED_BRIGHTNESS;
+            if (current_r != LED_R || current_g != LED_G || current_b != LED_B || current_brt != LED_BRIGHTNESS) {
+               for (int i = 0; i < LED_COUNT; i++) {
+                   target_state[i] = current_state[i];
+               }
+               startTransition();
             }
             return;
         }
@@ -162,42 +172,45 @@ public:
             return;
         }
 
-        strip.setBrightness(LED_BRIGHTNESS);
-        
+        float interpolated_brt = start_brt + (LED_BRIGHTNESS - start_brt) * progress;
+        strip.setBrightness((int)interpolated_brt);
+
+        float interpolated_r = start_r + (LED_R - start_r) * progress;
+        float interpolated_g = start_g + (LED_G - start_g) * progress;
+        float interpolated_b = start_b + (LED_B - start_b) * progress;
+
         for (int i = 0; i < LED_COUNT; i++) {
             bool was_on = current_state[i];
             bool will_be_on = target_state[i];
-            
+
             uint8_t r = 0, g = 0, b = 0;
-            
+
             // TRANSITION_EFFECT: 1 = Crossfade, 2 = Typewriter
             if (TRANSITION_EFFECT == 1) {
                 // Crossfade
                 float start_factor = was_on ? 1.0f : 0.0f;
                 float end_factor = will_be_on ? 1.0f : 0.0f;
                 float current_factor = start_factor + (end_factor - start_factor) * progress;
-                
-                r = LED_R * current_factor;
-                g = LED_G * current_factor;
-                b = LED_B * current_factor;
+
+                r = interpolated_r * current_factor;
+                g = interpolated_g * current_factor;
+                b = interpolated_b * current_factor;
             } else if (TRANSITION_EFFECT == 2) {
-                // Typewriter / Sequential
-                // The progress sweeps across the LEDs
+                // Typewriter / Sequential sweeps across the LEDs
                 float led_threshold = (float)i / LED_COUNT;
                 if (progress > led_threshold) {
-                    if (will_be_on) { r = LED_R; g = LED_G; b = LED_B; }
+                    if (will_be_on) { r = LED_R; g = LED_G; b = LED_B; }        
                 } else {
-                    // hasn't reached it yet, keep old state
-                    if (was_on) { r = LED_R; g = LED_G; b = LED_B; }
+                    if (was_on) { r = start_r; g = start_g; b = start_b; }
                 }
             } else {
-                // Fallback to crossfade
-                float current_factor = was_on ? (1.0f - progress) : 0.0f;
+                // Fallback crossfade
+                float current_factor = was_on ? (1.0f - progress) : 0.0f;       
                 if (!was_on && will_be_on) current_factor = progress;
                 else if (was_on && will_be_on) current_factor = 1.0f;
-                r = LED_R * current_factor;
-                g = LED_G * current_factor;
-                b = LED_B * current_factor;
+                r = interpolated_r * current_factor;
+                g = interpolated_g * current_factor;
+                b = interpolated_b * current_factor;
             }
             
             strip.setPixelColor(i, strip.Color(r, g, b));
@@ -206,16 +219,20 @@ public:
     }
 
     void applyCurrentState() {
-        strip.setBrightness(LED_BRIGHTNESS);
+        current_r = LED_R;
+        current_g = LED_G;
+        current_b = LED_B;
+        current_brt = LED_BRIGHTNESS;
+
+        strip.setBrightness(current_brt);
         strip.clear();
         if (LED_ENABLED) {
             for (int i = 0; i < LED_COUNT; i++) {
                 if (current_state[i]) {
-                    strip.setPixelColor(i, strip.Color(LED_R, LED_G, LED_B));
+                    strip.setPixelColor(i, strip.Color(current_r, current_g, current_b));   
                 }
             }
         }
         strip.show();
     }
-
 };
