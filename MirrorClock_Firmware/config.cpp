@@ -1,6 +1,4 @@
 #include "config.h"
-#include <Adafruit_NeoPixel.h>
-
 
 // ====== LED CONFIGURATION ======
 int LED_R = 255;
@@ -18,12 +16,6 @@ const char* NTP_SERVER = "pool.ntp.org";
 const unsigned long UPDATE_INTERVAL = 100;
 const bool AUTO_BRIGHTNESS_ENABLED = false;
 
-// ====== DEBUG CONFIGURATION ======
-// Note: DEBUG_ENABLED and DEBUG_PREFIX_* constants are defined in config.h
-
 // ====== GLOBAL STATE VARIABLES ======
 int lastHour = -1;
 int lastMinute = -1;
-
-// ====== GLOBAL OBJECTS ======
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);

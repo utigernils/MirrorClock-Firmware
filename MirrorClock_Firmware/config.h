@@ -1,6 +1,5 @@
 #pragma once
 
-
 // ====== LED CONFIGURATION ======
 #define LED_PIN 3
 #define LED_COUNT 114
@@ -44,6 +43,3 @@ extern int lastMinute;
 #define DEBUG_PREFIX_SENSOR  "[SENSOR] "
 #define DEBUG_PREFIX_WEB     "[WEB]  "
 #define DEBUG_PREFIX_SYSTEM  "[SYSTEM] "
-
-// ====== GLOBAL OBJECTS ======
-extern class Adafruit_NeoPixel strip;
